@@ -14,7 +14,7 @@
 #define STEPPER3_PIN_4 9
 
 int step_number = 0; // contador de passos
-int maxSteps = 2072; // numero de passos para volta completa
+int maxSteps = 2048; // numero de passos para volta completa
 void setup() {
   // seta todos os pins como saida
   pinMode(STEPPER1_PIN_1, OUTPUT);
@@ -56,28 +56,28 @@ void OneStep(bool dir, int pin1, int pin2, int pin3, int pin4, int step_number) 
   step_number = dir ? step_number : 3 - step_number;
   switch (step_number) {
   case 0:
-    digitalWrite(pin1, HIGH);
-    digitalWrite(pin2, LOW);
-    digitalWrite(pin3, LOW);
-    digitalWrite(pin4, LOW);
-    break;
-  case 1:
     digitalWrite(pin1, LOW);
     digitalWrite(pin2, HIGH);
-    digitalWrite(pin3, LOW);
-    digitalWrite(pin4, LOW);
+    digitalWrite(pin3, HIGH);
+    digitalWrite(pin4, HIGH);
     break;
-  case 2:
-    digitalWrite(pin1, LOW);
+  case 1:
+    digitalWrite(pin1, HIGH);
     digitalWrite(pin2, LOW);
     digitalWrite(pin3, HIGH);
-    digitalWrite(pin4, LOW);
+    digitalWrite(pin4, HIGH);
     break;
-  case 3:
-    digitalWrite(pin1, LOW);
-    digitalWrite(pin2, LOW);
+  case 2:
+    digitalWrite(pin1, HIGH);
+    digitalWrite(pin2, HIGH);
     digitalWrite(pin3, LOW);
     digitalWrite(pin4, HIGH);
+    break;
+  case 3:
+    digitalWrite(pin1, HIGH);
+    digitalWrite(pin2, HIGH);
+    digitalWrite(pin3, HIGH);
+    digitalWrite(pin4, LOW);
     break;
   }
 }
