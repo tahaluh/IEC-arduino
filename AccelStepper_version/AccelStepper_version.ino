@@ -17,7 +17,8 @@
 #define STEPPER_Z_PIN_3  11    // IN3 on ULN2003 ==> Yellow on 28BYJ-48
 #define STEPPER_Z_PIN_4  12    // IN4 on ULN2003 ==> Orange on 28BYJ-48
 
-long endPoint = 2048*2.8;        // Move this many steps - 1024 = approx 1/4 turn
+long endPointZ = 2048*2.8; 
+long endPointY = 2048*1.5;       // Move this many steps - 1024 = approx 1/4 turn
 
 // NOTE: The sequence 1-3-2-4 is required for proper sequencing of 28BYJ-48
 // O eixo X, Y e Z são os eixos responsáveis pelo comprimento, ejetor e elevador, respectivamente
@@ -50,32 +51,42 @@ void setup()
   stepperX.setMaxSpeed(500.0);
   stepperX.setAcceleration(80.0);
   stepperX.setSpeed(200);
-  stepperX.moveTo(endPoint);
+  stepperX.moveTo(endPointZ);
   stepperX.setPinsInverted(); // Inverte o sinal sem driver
 
   //Eixo Y
   stepperY.setMaxSpeed(500.0);
   stepperY.setAcceleration(80.0);
   stepperY.setSpeed(200);
-  stepperY.moveTo(endPoint);
+  stepperY.moveTo(endPointY);
   stepperY.setPinsInverted(); // Inverte o sinal sem driver
 
   //Eixo Z
   stepperZ.setMaxSpeed(500.0);
   stepperZ.setAcceleration(80.0);
   stepperZ.setSpeed(200);
-  stepperZ.moveTo(endPoint);
-  //stepperZ.setPinsInverted(); // Inverte o sinal sem driver
+  stepperZ.moveTo(endPointZ);
+  stepperZ.setPinsInverted(); // Inverte o sinal sem driver
 }
 
 void loop()
 {
     // Change direction at the limits
+    if (stepperY.distanceToGo() == 0)
+    {
+      stepperY.setCurrentPosition(0);
+      endPointY *= -1;
+      stepperY.moveTo(endPointY);
+    }
+
+    stepperY.run();
+
+    // Change direction at the limits
     if (stepperZ.distanceToGo() == 0)
     {
       stepperZ.setCurrentPosition(0);
-      delay(5000);
-      stepperZ.moveTo(-endPoint);
+      endPointZ *= -1;
+      stepperZ.moveTo(endPointZ);
     }
 
     stepperZ.run();
